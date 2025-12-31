@@ -100,7 +100,7 @@ const Sir = () => {
               
               {/* REPLACE SRC BELOW WITH SIR'S IMAGE */}
               <img 
-                src="sir_image.jpg " 
+                src="sir_image.jpg" 
                 alt="ICT Sir" 
                 className="w-full h-[400px] object-cover hover:scale-105 transition-transform duration-700"
               />
