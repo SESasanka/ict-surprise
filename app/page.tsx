@@ -9,7 +9,6 @@ import FeedbackSection from './components/FeedbackSection';
 import Memories from './components/Memories';
 import Footer from './components/Footer';
 
-
 // Register GSAP Plugin
 if (typeof window !== "undefined") {
   gsap.registerPlugin(TextPlugin);

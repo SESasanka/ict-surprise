@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Trash2, AlertTriangle, CheckCircle, X } from 'lucide-react'; // Import icons
+import React, { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Trash2, AlertTriangle, CheckCircle, X } from "lucide-react"; // Import icons
 
 // Register ScrollTrigger
 if (typeof window !== "undefined") {
@@ -30,7 +30,11 @@ export default function FeedbackSection() {
   const [isMounted, setIsMounted] = useState(false);
 
   // --- CUSTOM ALERT STATE ---
-  const [alertState, setAlertState] = useState({ show: false, message: '', type: 'error' });
+  const [alertState, setAlertState] = useState({
+    show: false,
+    message: "",
+    type: "error",
+  });
 
   // 1. Load Comments from LocalStorage
   useEffect(() => {
@@ -46,7 +50,7 @@ export default function FeedbackSection() {
   }, []);
 
   // 2. Alert Animation Logic
-  const triggerAlert = (msg: string, type: 'error' | 'success' = 'error') => {
+  const triggerAlert = (msg: string, type: "error" | "success" = "error") => {
     setAlertState({ show: true, message: msg, type });
 
     if (alertRef.current) {
@@ -57,36 +61,58 @@ export default function FeedbackSection() {
       gsap.set(alertRef.current, { y: -100, opacity: 0 });
 
       // Slide In
-      tl.to(alertRef.current, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.7)" });
+      tl.to(alertRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+      });
 
       // Shake if Error
-      if (type === 'error') {
-        tl.to(alertRef.current, { x: 10, duration: 0.1, repeat: 5, yoyo: true, ease: "sine.inOut" });
+      if (type === "error") {
+        tl.to(alertRef.current, {
+          x: 10,
+          duration: 0.1,
+          repeat: 5,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
         tl.to(alertRef.current, { x: 0, duration: 0.1 });
       }
 
       // Auto Hide
       gsap.to(alertRef.current, {
-        y: -100, opacity: 0, duration: 0.5, delay: 3, ease: "power3.in",
-        onComplete: () => setAlertState(prev => ({ ...prev, show: false }))
+        y: -100,
+        opacity: 0,
+        duration: 0.5,
+        delay: 3,
+        ease: "power3.in",
+        onComplete: () => setAlertState((prev) => ({ ...prev, show: false })),
       });
     }
   };
 
   // 3. Scroll Animation
-  useGSAP(() => {
-    if (!containerRef.current) return;
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-    });
-    tl.from(containerRef.current.children, {
-      y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power3.out",
-    });
-  }, { scope: containerRef });
+  useGSAP(
+    () => {
+      if (!containerRef.current) return;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+      tl.from(containerRef.current.children, {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power3.out",
+      });
+    },
+    { scope: containerRef }
+  );
 
   // 4. Handle Publish
   const handlePublish = () => {
@@ -107,7 +133,12 @@ export default function FeedbackSection() {
     localStorage.setItem("ict_student_comments", JSON.stringify(updated));
 
     // Button Animation
-    gsap.to(formRef.current, { scale: 0.98, duration: 0.1, yoyo: true, repeat: 1 });
+    gsap.to(formRef.current, {
+      scale: 0.98,
+      duration: 0.1,
+      yoyo: true,
+      repeat: 1,
+    });
 
     triggerAlert("SUCCESS: Message added to repository!", "success");
     setName("");
@@ -116,7 +147,7 @@ export default function FeedbackSection() {
 
   // 5. Handle Delete SINGLE Comment
   const handleDeleteOne = (idToDelete: number) => {
-    const updated = comments.filter(comment => comment.id !== idToDelete);
+    const updated = comments.filter((comment) => comment.id !== idToDelete);
     setComments(updated);
     localStorage.setItem("ict_student_comments", JSON.stringify(updated));
     triggerAlert("Deleted comment successfully.", "success");
@@ -125,31 +156,49 @@ export default function FeedbackSection() {
   if (!isMounted) return null;
 
   return (
-    <div ref={containerRef} className="w-full max-w-4xl border-t border-slate-800 pt-12 relative">
-      
+    <div
+      ref={containerRef}
+      className="w-full max-w-4xl border-t border-slate-800 pt-12 relative"
+    >
       {/* --- CUSTOM POPUP NOTIFICATION --- */}
-      <div 
+      <div
         ref={alertRef}
         className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 px-6 py-4 rounded-lg border shadow-2xl backdrop-blur-md min-w-[320px]
-          ${alertState.show ? 'pointer-events-auto' : 'pointer-events-none opacity-0'}
-          ${alertState.type === 'error' 
-            ? 'bg-red-950/90 border-red-500 text-red-200 shadow-red-900/20' 
-            : 'bg-green-950/90 border-green-500 text-green-200 shadow-green-900/20'
+          ${
+            alertState.show
+              ? "pointer-events-auto"
+              : "pointer-events-none opacity-0"
+          }
+          ${
+            alertState.type === "error"
+              ? "bg-red-950/90 border-red-500 text-red-200 shadow-red-900/20"
+              : "bg-green-950/90 border-green-500 text-green-200 shadow-green-900/20"
           }
         `}
       >
-        <div className={`p-2 rounded-full ${alertState.type === 'error' ? 'bg-red-500/20' : 'bg-green-500/20'}`}>
-          {alertState.type === 'error' ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle className="w-5 h-5" />}
+        <div
+          className={`p-2 rounded-full ${
+            alertState.type === "error" ? "bg-red-500/20" : "bg-green-500/20"
+          }`}
+        >
+          {alertState.type === "error" ? (
+            <AlertTriangle className="w-5 h-5" />
+          ) : (
+            <CheckCircle className="w-5 h-5" />
+          )}
         </div>
         <div>
           <h4 className="font-bold font-mono text-xs tracking-widest mb-1">
-            {alertState.type === 'error' ? 'SYSTEM_ERROR' : 'COMMIT_SUCCESS'}
+            {alertState.type === "error" ? "SYSTEM_ERROR" : "COMMIT_SUCCESS"}
           </h4>
           <p className="text-sm font-sans font-medium">{alertState.message}</p>
         </div>
-        
+
         {/* Close Button */}
-        <button onClick={() => gsap.to(alertRef.current, { y: -100, opacity: 0 })} className="ml-auto p-1 hover:bg-white/10 rounded">
+        <button
+          onClick={() => gsap.to(alertRef.current, { y: -100, opacity: 0 })}
+          className="ml-auto p-1 hover:bg-white/10 rounded"
+        >
           <X className="w-4 h-4" />
         </button>
       </div>
@@ -159,13 +208,20 @@ export default function FeedbackSection() {
         <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400 mb-2">
           Student Comments 🚀
         </h3>
-        <p className="text-slate-500 text-sm font-mono">Leave a message for Sir!</p>
+        <p className="text-slate-500 text-sm font-mono">
+          Leave a message for Sir!
+        </p>
       </div>
 
       {/* --- ADD COMMENT FORM --- */}
-      <div ref={formRef} className="bg-[#161b22] border border-slate-700 rounded-xl p-6 md:p-8 shadow-2xl mb-12 relative overflow-hidden">
+      <div
+        ref={formRef}
+        className="bg-[#161b22] border border-slate-700 rounded-xl p-6 md:p-8 shadow-2xl mb-12 relative overflow-hidden"
+      >
         <div className="mb-4 relative z-10">
-          <label className="block text-xs font-mono text-cyan-400 mb-2">NAME / ALIAS</label>
+          <label className="block text-xs font-mono text-cyan-400 mb-2">
+            NAME / ALIAS
+          </label>
           <input
             type="text"
             value={name}
@@ -175,7 +231,9 @@ export default function FeedbackSection() {
           />
         </div>
         <div className="mb-4 relative z-10">
-          <label className="block text-xs font-mono text-cyan-400 mb-2">MESSAGE</label>
+          <label className="block text-xs font-mono text-cyan-400 mb-2">
+            MESSAGE
+          </label>
           <textarea
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
@@ -191,64 +249,98 @@ export default function FeedbackSection() {
         </button>
       </div>
 
-      {/* --- VIEWING SECTION --- */}
+      {/* --- COMMENTS VIEWING SECTION --- */}
+      {/* This section displays all student comments in a git-style log format */}
       <div className="space-y-4">
+        {/* Section Header with Git Command Style */}
         <h4 className="text-slate-400 font-mono text-sm border-b border-slate-800 pb-2 mb-4">
-          {`> git log --recent`}
+          {`> git log --recent`}{" "}
+          {/* Mimics terminal command for viewing recent commits */}
         </h4>
 
+        {/* Conditional Rendering: Empty State vs. Comments List */}
         {comments.length === 0 ? (
+          /* Empty State - Shows when no comments exist in localStorage */
           <p className="text-slate-600 text-center italic py-8">
             // No comments found. Be the first to commit!
           </p>
         ) : (
+          /* Comments List - Maps through all stored comments and renders each one */
           comments.map((entry) => (
+            /* Individual Comment Card */
             <div
-              key={entry.id}
+              key={entry.id} /* Unique identifier for React reconciliation */
               className="group relative bg-[#0d1117] border border-slate-700/50 rounded-lg p-4 flex gap-4 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.1)] transition-all duration-300"
             >
-              {/* Avatar */}
+              {/* User Avatar - First letter of the user's name */}
               <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-cyan-400 font-bold border border-slate-600 shrink-0 group-hover:scale-110 transition-transform">
-                {entry.name.charAt(0).toUpperCase()}
-              </div>
-              
-              {/* Content */}
-              <div className="flex-1 pr-8">
-                <div className="flex justify-between items-start">
-                  <h4 className="font-bold text-white text-[16px] group-hover:text-cyan-300 transition-colors">
-                    {entry.name}
-                  </h4>
-                  <span className="text-slate-600 text-[15px] font-mono">{entry.date}</span>
-                </div>
-                <p className="text-slate-300 text-[16px] mt-1 leading-relaxed break-words">{entry.comment}</p>
+                {entry.name.charAt(0).toUpperCase()}{" "}
+                {/* Displays first letter of name as avatar */}
               </div>
 
-              {/* DELETE SINGLE BUTTON (Visible on Hover) */}
+              {/* Comment Content Container */}
+              <div className="flex-1 pr-8">
+                {" "}
+                {/* flex-1 makes it take remaining space, pr-8 leaves room for delete button */}
+                {/* Header with Name and Date */}
+                <div className="flex justify-between items-start">
+                  {/* Author Name */}
+                  <h4 className="font-bold text-white text-[16px] group-hover:text-cyan-300 transition-colors">
+                    {entry.name} {/* Display the commenter's name */}
+                  </h4>
+                  {/* Timestamp in monospace font for terminal aesthetic */}
+                  <span className="text-slate-600 text-[15px] font-mono">
+                    {entry.date}
+                  </span>
+                </div>
+                {/* Comment Text */}
+                <p className="text-slate-300 text-[16px] mt-1 leading-relaxed break-words">
+                  {entry.comment} {/* The actual comment message content */}
+                </p>
+              </div>
+
+              {/* Individual Comment Delete Button */}
+              {/* Only visible on hover thanks to opacity-0 and group-hover:opacity-100 */}
               <button
-                onClick={() => handleDeleteOne(entry.id)}
+                onClick={() =>
+                  handleDeleteOne(entry.id)
+                } /* Calls delete function with specific comment ID */
                 className="absolute top-2 right-2 p-2 rounded text-slate-600 hover:text-red-500 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200"
-                title="Remove Comment"
+                title="Remove Comment" /* Tooltip text */
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-4 h-4" /> {/* Lucide trash icon */}
               </button>
             </div>
           ))
         )}
 
-        {/* Clear All History Button */}
+        {/* Global Clear All Comments Button */}
+        {/* Only shows when there are comments to delete */}
         {comments.length > 0 && (
           <div className="text-center mt-8">
+            {/* Dangerous action button styled like a terminal command */}
             <button
               onClick={() => {
-                if (confirm("WARNING: This will delete ALL comments. Are you sure?")) {
-                  localStorage.removeItem("ict_student_comments");
-                  setComments([]);
-                  triggerAlert("Database wiped successfully.", "success");
+                /* Double confirmation before destructive action */
+                if (
+                  confirm(
+                    "WARNING: This will delete ALL comments. Are you sure?"
+                  )
+                ) {
+                  localStorage.removeItem(
+                    "ict_student_comments"
+                  ); /* Clear from browser storage */
+                  setComments([]); /* Clear from React state */
+                  triggerAlert(
+                    "Database wiped successfully.",
+                    "success"
+                  ); /* Show success notification */
                 }
               }}
               className="text-xs text-red-500/30 hover:text-red-500 underline font-mono transition-colors"
             >
-              sudo rm -rf ./all_history
+              sudo rm -rf ./all_history{" "}
+              {/* Terminal-style text for deleting all data */}
             </button>
           </div>
         )}
