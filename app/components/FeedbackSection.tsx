@@ -58,6 +58,18 @@ const DEFAULT_COMMENTS: CommentType[] = [
     comment: "We would like to express our sincere gratitude for your dedication and commitment to teaching Information Technology. Your patience, clear explanations, and constant encouragement helped us understand even the most challenging concepts with confidence. You always motivated us to explore, think critically, and believe in our abilities. Beyond teaching us technical skills, you guided us to be responsible digital citizens and prepared us for a rapidly changing world. Your passion for teaching and your willingness to support us at every step made a lasting impact on our academic journey. We will always remember your lessons, kindness, and guidance. Thank you for being an inspiring teacher and mentor.❤️",
     date: "31/12/2025",
   },
+  {
+    id: 103,
+    name: "Nirwan Randima",
+    comment: "Thank you, dear teacher, for turning complex technology into simple knowledge and for guiding us with patience and dedication. Your lessons went beyond computers—you taught us confidence, problem-solving, and the courage to explore the digital world. We are truly grateful for your support and inspiration.🤍",
+    date: "31/12/2025",
+  },
+  {
+    id: 103,
+    name: "Akalanka",
+    comment: "Thank you, sir, for guiding us through the world of ICT with dedication and care.Your lessons shaped not just our skills, but our future.❤️",
+    date: "31/12/2025",
+  },
 ];
 
 export default function FeedbackSection() {
